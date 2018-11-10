@@ -25,10 +25,10 @@ router.post('/',(req,res,next)=>
 });
 
 router.delete('/:id',(req,res,next)=>
-{ 
-    itemInList.findByIdAndDelete({_id:req.params.id}).then((itemInList)=>
-    {
-    console.log('item',itemInList);
+{  
+  itemInList.findByIdAndDelete({_id:req.params.id}).then((itemInList)=>
+  {
+      res.json(itemInList);
  }).catch(next);
 });
 
