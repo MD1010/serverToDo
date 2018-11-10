@@ -6,23 +6,41 @@ const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-
 import itemInList from '../Schemas/toDoSchema';
 
 /* GET home page. */
-router.get('/', function(req, res, next) 
+router.get('/', (req, res, next)=>
 {
-  res.send('ok')
+  itemInList.find({}).then((items)=>{
+    res.send(items);
+  });
 });
 
-router.post('/',function(req,res,next)
+router.post('/',(req,res,next)=>
 { 
-
-  itemInList.create(req.body).then(function(newItem)
+  itemInList.create(req.body).then((newItem)=>
   {
-    console.log(newItem);
     res.json({ content:req.body.content });
   }).catch(next);
-
 });
+
+router.delete('/:id',(req,res,next)=>
+{ 
+    itemInList.findByIdAndDelete({_id:req.params.id}).then((itemInList)=>
+    {
+    console.log('item',itemInList);
+ }).catch(next);
+});
+
+router.put('/:id',(req,res,next)=>
+{ 
+  itemInList.findByIdAndUpdate({_id:req.params.id},req.body).then(()=>
+  {
+  itemInList.findOne({_id:req.params.id}).then((itemInList)=>{
+      res.send(itemInList);
+  });   
+ }).catch(next);
+});
+
+//////////////////////handle the cased the id doesnt exist
 module.exports = router;
