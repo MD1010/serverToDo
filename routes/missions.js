@@ -20,7 +20,7 @@ router.post('/',(req,res,next)=>
 { 
   itemInList.create(req.body).then((newItem)=>
   {
-    res.json({ content:req.body.content });
+    res.json({ _id: newItem._id, content:req.body.content });
   }).catch(next);
 });
 
@@ -28,7 +28,7 @@ router.delete('/:id',(req,res,next)=>
 {  
   itemInList.findByIdAndDelete({_id:req.params.id}).then((itemInList)=>
   {
-      res.json(itemInList);
+    res.json(itemInList);
  }).catch(next);
 });
 
