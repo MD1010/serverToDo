@@ -12,7 +12,11 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(express.static(path.join(__dirname, 'public')));
 
-mongoose.connect('mongodb://localhost/toDoList',{ useNewUrlParser: true });
+mongoose.connect('mongodb://Michael:Michael1@ds145484.mlab.com:45484/mdb',{ useNewUrlParser: true })
+.catch(err =>
+{   console.error('App starting error:', err.stack);
+    process.exit(1);
+})
 mongoose.Promise = global.Promise;
 
 app.use('/', indexRouter);
