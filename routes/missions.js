@@ -13,7 +13,7 @@ router.get('/', (req, res, next)=>
 {
   itemInList.find({}).then((items)=>{
     res.send(items);
-  });
+  }).catch(next);
 });
 
 router.post('/',(req,res,next)=>

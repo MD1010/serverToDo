@@ -2,6 +2,7 @@ import express from 'express';
 import path from 'path';
 import indexRouter from './routes/index';
 import missionRouter from './routes/missions';
+import usersRouter from './routes/users';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
@@ -21,6 +22,7 @@ mongoose.Promise = global.Promise;
 
 app.use('/', indexRouter);
 app.use('/missions',missionRouter);
+app.use('/users',usersRouter);
 
 app.use((err,req,res,next)=>{
     res.status(422).send({error:err.message})
