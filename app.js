@@ -6,7 +6,6 @@ import usersRouter from './routes/users';
 import mongoose from 'mongoose';
 import cors from 'cors';
 
-
 var app = express();
 app.use(cors());
 app.use(express.json());

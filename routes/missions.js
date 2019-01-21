@@ -42,5 +42,4 @@ router.put('/:id',(req,res,next)=>
  }).catch(next);
 });
 
-//////////////////////handle the cased the id doesnt exist
 module.exports = router;

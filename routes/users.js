@@ -1,45 +1,39 @@
-import express from 'express'
+import express from 'express';
 import bodyParser from 'body-parser';
-import { MongoClient } from 'mongodb'
 
 let router = express.Router();
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
+import usersCollection from '../Schemas/userSchema';
 
-// const MONGO_CLIENT = mongo.MongoClient;
-const MONGO_CONNECT_URL = 'mongodb://Michael:Michael1@ds145484.mlab.com:45484/mdb';
-const COLLECTION_NAME = "Users";
-     
-//get all the users
+router.get('/', (req, res, next)=>
+{
+    usersCollection.find({}).then((users)=>
+    {
+        console.log("users:",users)
+        res.send(users);
+    }).catch(next);
+});
 
-let doConnection = ()=>{
-    MongoClient.connect(MONGO_CONNECT_URL,  { useNewUrlParser: true }, (err, db)=> {
-        if(db)
-        {
-            let dbConnection = db.db("mdb");
-            dbConnection.collection(COLLECTION_NAME).find({}).toArray(function(err, result) {
-                if (err) console.err(err);
-                db.close();                
-                console.log(result)
-            });
-            console.log("successfully connected to DB!")
-        }
-        if(err)
-            console.log("cannot connect :(", err);
-    })
-}
-router.get('/', (req,res,next)=>{
-   doConnection()
+router.post('/',(req,res,next)=>
+{ 
+    usersCollection.create(req.body).then((newUser)=>
+    {
+        res.json({ userName: newUser.userName, 
+                   email: newUser.email,
+                   password: newUser.password
+                });
+    }).catch(next);
+});
 
-    // let dbConnection = db.db("Dor");
-    // dbConnection.collection(COLLECTION_NAME).find({}).toArray(function(err, result) {
-    //     if (err) reject(err);
-    //     db.close();                
-    //     resolve(result);
-    // });
-    res.send('at least no crash')
-})
+router.delete('/:id',(req,res,next)=>
+{  
+    usersCollection.findByIdAndDelete({_id:req.params.id}).then((user)=>
+    {
+        res.json(user);
+    }).catch(next);
+});
 
-module.exports = router
+module.exports = router;
