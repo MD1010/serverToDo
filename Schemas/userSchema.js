@@ -1,4 +1,4 @@
-import mongoose  from 'mongoose';
+import mongoose, { version }  from 'mongoose';
 const Schema = mongoose.Schema;
 
 const userSchema = new Schema
@@ -23,7 +23,7 @@ const userSchema = new Schema
         }
     }
 );
-
+userSchema.set('versionKey', false);
 const usersCollection = mongoose.model('Users',userSchema,'Users');
 
 module.exports = usersCollection;

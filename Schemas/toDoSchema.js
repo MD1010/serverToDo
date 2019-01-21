@@ -11,7 +11,7 @@ const toDoItemSchema = new Schema
         }
     }
 );
-
+toDoItemSchema.set('versionKey', false);
 const itemInList = mongoose.model('missions',toDoItemSchema);
 
 module.exports = itemInList;

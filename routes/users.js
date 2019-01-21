@@ -1,18 +1,17 @@
 import express from 'express';
 import bodyParser from 'body-parser';
+import usersCollection from '../Schemas/userSchema';
 
 let router = express.Router();
 const app = express();
 
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(bodyParser.json());
-import usersCollection from '../Schemas/userSchema';
 
 router.get('/', (req, res, next)=>
 {
     usersCollection.find({}).then((users)=>
     {
-        console.log("users:",users)
         res.send(users);
     }).catch(next);
 });
