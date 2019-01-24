@@ -4,13 +4,17 @@ import usersCollection from '../../Schemas/userSchema';
 function validateFields(req,next){
     let okFields = true 
     let { userName, email, password } = req.body
+    const spaceRegex = RegExp(/\s/)
     const passwordRegex = RegExp(/^.{4,8}$/)
     const emailRegex = RegExp(
         /^[a-zA-Z0-9.!#$%&’*+/=?^_`{|}~-]+@[a-zA-Z0-9-]+(?:\.[a-zA-Z0-9-]+)*$/
         );
-    if(userName.trim().length < 4 || userName.trim().length > 8){
+    if(userName.trim().length < 4){
         okFields = false
-        next({message:"username has to be between 4 and 8 characters"})
+        next({message:"username has to be at lest 4 characters"})
+    }
+    if(spaceRegex.test(userName)){
+        next({message:"username cannot have any whitespaces"})
     }
     if(!passwordRegex.test(password)){
         okFields = false
@@ -21,6 +25,7 @@ function validateFields(req,next){
         okFields = false
         next({message:"Invalid email address"})
     }
+
     return okFields
 }
 
@@ -32,10 +37,6 @@ async function checkIfuserExists(req, res, next){
             next({message:"username already exists"})
             foundUserName = true 
         }
-        else{
-            res.status(201).end()
-        }
-           
     })
     return foundUserName
 }

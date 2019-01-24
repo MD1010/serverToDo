@@ -20,15 +20,17 @@ router.get('/', (req, res, next)=>
 
 router.post('/',(req,res,next)=>
 { 
-    if(validateFields(req,next) && !checkIfuserExists(req,res,next)){
-        usersCollection.create(req.body).then((newUser)=>
-        {
-            res.json({ userName: newUser.userName, 
-                       email: newUser.email,
-                       password: newUser.password
-                    });
-        }).catch(next);
-    }
+    checkIfuserExists(req,res,next).then(userExists=>{
+        if(validateFields(req,next) && !userExists){
+            usersCollection.create(req.body).then((newUser)=>
+            {
+                res.status(201).json({ userName: newUser.userName, 
+                            email: newUser.email,
+                            password: newUser.password
+                        });
+            }).catch(next);
+        }
+    })
 });
 
 router.delete('/:id',(req,res,next)=>

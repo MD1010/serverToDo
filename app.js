@@ -22,8 +22,8 @@ mongoose.Promise = global.Promise;
 app.use('/', indexRouter);
 app.use('/missions',missionRouter);
 app.use('/users',usersRouter);
-
 app.use((err,req,res,next)=>{
     res.status(422).send({error:err.message})
 });
+
 module.exports = app;
